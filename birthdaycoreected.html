@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>🎂 Happy Birthday Kunju 🎈</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    *{box-sizing: border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: sans-serif;
+      background: radial-gradient(circle at top, #ffb6c1, #ff69b4, #ff1493);
+      color:#fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1{
+      font-family: cursive, sans-serif;
+      font-size:3.6rem;
+      letter-spacing:3px;
+      margin-bottom:6px;
+      text-shadow:0 0 12px rgba(255,255,255,0.25)
+    }
+    h3{font-weight:300;margin-bottom:18px}
+
+    .controls{display:flex;gap:12px;z-index:200; }
+    .btn{
+      background:#fff;
+      border: none;
+      color:#ff147b;
+      padding:10px 18px;
+      border-radius:22px;
+      font-weight:600;
+      cursor: pointer;
+      box-shadow:0 8px 20px rgba(0,0,0,0.12);
+      transition: transform .18s ease, background .18s;
+    }
+    .btn:hover {transform: translateY(-2px)}
+    .btn:active {background:#ff69b4;color:#fff}
+
+    /* === Letter style updated === */
+    .letter{
+      display: none;
+      position: absolute;
+      top:50%;
+      left:50%;
+      transform: translate(-50%,-50%);
+      width:95%;
+      max-width:700px;
+      background: rgba(255,255,255,0.98);
+      color:#ff147b;
+      border-radius:20px;
+      padding:40px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      z-index:300;
+      font-size:1.25rem;
+      line-height:1.8;
+    }
+    .letter h2{margin-bottom:12px;font-size:1.6rem}
+    .close{
+      position: absolute;
+      right:15px;
+      top:12px;
+      border: none;
+      background: transparent;
+      font-size:26px;
+      color:#ff147b;
+      cursor: pointer;
+    }
+
+    .balloon{
+      position: absolute;
+      bottom:-160px;
+      width:64px;
+      height:84px;
+      border-radius:50%;
+      z-index:120;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    canvas#confetti{
+      position: fixed;
+      inset:0;
+      z-index:50;
+      pointer-events: none;
+    }
+
+    @media (max-width:480px){
+      h1{font-size:2.2rem}
+      .btn{padding:8px 14px}
+      .letter{font-size:1.05rem; padding:28px; max-width:90%;}
+      .letter h2{font-size:1.3rem}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <h1>🎉 Happy Birthday Kunju 🎉</h1>
+  <h3>Wishing you a year filled with joy, love & laughter 💖</h3>
+
+  <div class="controls">
+    <button class="btn" id="openLetter">💌 Open Surprise</button>
+  </div>
+
+  <div class="letter" id="letterBox" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+    <button class="close" id="closeLetter" aria-label="Close">&times;</button>
+    <h2 id="letterTitle">To: Kunju 💖</h2>
+    <div style="margin-top:6px;">
+      Happy Birthday, my Love 🎂💐<br><br>
+      The day you came into my life, I never knew you'd become so special to me.
+      You’ve brought smiles, warmth, and countless beautiful memories.
+      I hope this year brings you endless happiness, success, and love.
+      Always keep shining bright — the world needs your light. 💖<br><br>
+      — With lots of love, <br><strong>Your Boo Boo 💫</strong>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    // === Confetti Animation ===
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    let W = innerWidth, H = innerHeight;
+    function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    addEventListener('resize', resize); resize();
+
+    const particles = [];
+    function initParticles(n=150){
+      particles.length=0;
+      for(let i=0;i<n;i++){
+        particles.push({
+          x: Math.random()*W,
+          y: Math.random()*H,
+          vx:(Math.random()-0.5)*0.6,
+          vy:1+Math.random()*2.6,
+          size:4+Math.random()*6,
+          tilt: Math.random()*20,
+          tiltSpeed:0.02+Math.random()*0.06,
+          color:`hsl(${Math.floor(Math.random()*360)},80%,60%)`
+        });
+      }
+    }
+    initParticles();
+
+    function animate(){
+      ctx.clearRect(0,0,W,H);
+      for(const p of particles){
+        p.x+=p.vx;
+        p.y+=p.vy;
+        p.tilt+=p.tiltSpeed;
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(Math.sin(p.tilt)*0.3);
+        ctx.fillStyle=p.color;
+        ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+        ctx.restore();
+        if(p.y>H+20)p.y=-20;
+        if(p.x>W+20)p.x=-20;
+        if(p.x<-20)p.x=W+20;
+      }
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    // === Balloons ===
+    function spawnBalloon(){
+      const b=document.createElement('div');
+      b.className='balloon';
+      const w=44+Math.random()*36;
+      const h=w*1.25;
+      b.style.width=w+'px';
+      b.style.height=h+'px';
+      b.style.left=Math.random()*85+2+'vw';
+      b.style.background=`linear-gradient(135deg, hsl(${Math.random()*360},80%,70%), hsl(${Math.random()*360},60%,60%))`;
+      document.body.appendChild(b);
+      const duration=5000+Math.random()*6000;
+      const start=performance.now();
+      function step(now){
+        const t=(now-start)/duration;
+        b.style.bottom=(-160+t*(innerHeight+320))+'px';
+        b.style.transform=`rotate(${Math.sin(t*Math.PI*2)*15}deg) translateX(${Math.sin(t*Math.PI*1.5)*30}px)`; // Added a sway
+        if(t<1)requestAnimationFrame(step); else b.remove();
+      }
+      requestAnimationFrame(step);
+    }
+    setInterval(spawnBalloon,700);
+
+    // === Letter toggle ===
+    const openBtn=document.getElementById('openLetter');
+    const closeBtn=document.getElementById('closeLetter');
+    const letter=document.getElementById('letterBox');
+
+    openBtn.addEventListener('click',()=>{
+      letter.style.display='block';
+      burstConfetti(25);
+    });
+
+    closeBtn.addEventListener('click',()=>{
+      letter.style.display='none';
+    });
+
+    window.addEventListener('click',(ev)=>{
+      if(letter.style.display==='block' && !letter.contains(ev.target) && ev.target!==openBtn){
+        letter.style.display='none';
+      }
+    });
+
+    function burstConfetti(n){
+      for(let i=0;i<n;i++){
+        particles.push({
+          x: W/2+(Math.random()-0.5)*240,
+          y: H/2+(Math.random()-0.5)*80,
+          vx:(Math.random()-0.5)*6,
+          vy:-4-Math.random()*4,
+          size:3+Math.random()*6,
+          tilt: Math.random()*10,
+          tiltSpeed:0.1+Math.random()*0.4,
+          color:`hsl(${Math.floor(Math.random()*360)},80%,60%)`
+        });
+      }
+    }
+
+    window.addEventListener('keydown',(e)=>{
+      if(e.key==='Escape' && letter.style.display==='block') letter.style.display='none';
+    });
+  })();
+  </script>
+</body>
+</html>
