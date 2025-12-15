@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; font-family: Arial, sans-serif; }
+  
+  /* The Card Container */
+  .card {
+    width: 300px; height: 400px;
+    perspective: 1000px; /* Gives the 3D depth effect */
+    cursor: pointer;
+  }
+
+  /* The Moving Part */
+  .card-inner {
+    position: relative; width: 100%; height: 100%;
+    text-align: center; transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+
+  /* Flip action */
+  .card.flipped .card-inner { transform: rotateY(180deg); }
+
+  /* Front and Back common styles */
+  .front, .back {
+    position: absolute; width: 100%; height: 100%;
+    backface-visibility: hidden; display: flex;
+    align-items: center; justify-content: center;
+    border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    padding: 20px; box-sizing: border-box;
+  }
+
+  /* Front Design */
+  .front { background-color: #ff4d6d; color: white; flex-direction: column; }
+  .front h1 { font-size: 3em; margin: 0; }
+  
+  /* Back Design */
+  .back { background-color: white; color: #333; transform: rotateY(180deg); flex-direction: column; }
+</style>
+</head>
+<body>
+
+<div class="card" onclick="this.classList.toggle('flipped')">
+  <div class="card-inner">
+    <div class="front">
+      <h1>❤️</h1>
+      <h2>To my ponnee ❤️</h2>
+      <p>(❤️Click to Open❤️)</p>
+    </div>
+    <div class="back">
+      <h2>I Love you ponnee.Ende babyde kude njn indettoo appozhum !</h2>
+      <p>Happy christmas in advance kunju babee.</p>
+      <p>I love you!</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
